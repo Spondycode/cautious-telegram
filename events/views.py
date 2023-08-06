@@ -35,3 +35,7 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime("%B"))
             "time": time,
         },
     )
+
+
+# def about(request):
+#     return (request, "events/about.html")
