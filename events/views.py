@@ -1,4 +1,4 @@
-from os import walk
+# from os import path
 from django.shortcuts import render
 import calendar
 from calendar import HTMLCalendar
@@ -24,7 +24,7 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime("%B"))
 
     return render(
         request,
-        "home.html",
+        "events/home.html",
         {
             "first_name": name,
             "year": year,
