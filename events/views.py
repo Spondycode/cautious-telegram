@@ -8,6 +8,10 @@ from .models import Event, Venue
 from .forms import VenueForm
 
 
+def search_venues(request):
+    return render(request, "events/search_venues.html", {})
+
+
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     return render(request, "events/show_venue.html", {"venue": venue})
