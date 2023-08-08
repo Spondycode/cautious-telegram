@@ -8,16 +8,16 @@
   <div class=card>
     <h3 class=card-header>  {{ event.name }}</h3>
       <ul>
-      <li>Date: {{ event.event_date }}</li>
-      <li>Venue: {{ event.venue }}</li>
-      <li>Venue Web Page: {{ event.venue.web }}</li>
-      <li>Manager: {{ event.manager }}</li>
-      <li>Description: {{ event.description }}</li>
-      <br/>
-      <h5>Attendees:</h5> 
-      {% for user in event.attendees.all %}
-      <li>{{ user }}</li>
-      {% endfor %}
+        <li>Date: {{ event.event_date }}</li>
+        <li>Venue: {{ event.venue }}</li>
+        <li>Venue Web Page: {{ event.venue.web }}</li>
+        <li>Manager: {{ event.manager }}</li>
+        <li>Description: {{ event.description }}</li>
+        <br/>
+        <h5>Attendees:</h5> 
+        {% for user in event.attendees.all %}
+        <li>{{ user }}</li>
+        {% endfor %}
       </ul>
   </div><br/>
   {% endfor %}
