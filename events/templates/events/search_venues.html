@@ -1,14 +1,23 @@
-
 {% extends 'events/base.html' %}
 
 {% block content %}
-    
+    <center>
+  <!-- Here is the start of the IF for check if something was searched for -->
+    {% if searched %}    
 <div class=container>
   
-  <h1>Search Results</h1>
-    <center>
+    <h1>You Searched For {{ searched }}</h1>
+    <p> Is this what you were looking for? </p>
+    <!-- Now a for loop to go through the results from the database -->
+    {% for venue in venues %}
+    <a href="{% url 'show-venue' venue.id %}">{{ venue }}</a><br/>
+    {% endfor %}
 
-    <p> Is this what you were looking for?! </p>
+    {% else %}
+      <h1>You forgot to search for a venue !</h1>
+
+    {% endif %}
+
 
 </div>
 

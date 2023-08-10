@@ -1,27 +1,73 @@
 # from os import path
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from .models import Event, Venue
-from .forms import VenueForm
+from .forms import VenueForm, EventForm
 
 
+# Add the Event page
+
+
+def add_event(request):
+    submitted = False
+    if request.method == "POST":
+        form = EventForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/add_event?submitted=True")
+    else:
+        form = EventForm
+        if "submitted" in request.GET:
+            submitted = True
+    return render(
+        request, "events/add_event.html", {"form": form, "submitted": submitted}
+    )
+
+
+# The update venues thing
+def update_venue(request, venue_id):
+    venue = Venue.objects.get(pk=venue_id)
+    form = VenueForm(
+        request.POST or None, instance=venue
+    )  # instance brngs in the details from the database entry
+    if form.is_valid():
+        form.save()
+        return redirect("list-venues")
+    return render(request, "events/update_venue.html", {"venue": venue, "form": form})
+
+
+# Searching the venues
 def search_venues(request):
-    return render(request, "events/search_venues.html", {})
+    if request.method == "POST":
+        searched = request.POST["searched"]
+        venues = Venue.objects.filter(
+            name__contains=searched
+        )  # To make the search of the database
+        return render(
+            request,
+            "events/search_venues.html",
+            {"searched": searched, "venues": venues},
+        )  # inside the curlies to pass back to the page.
+    else:
+        return render(request, "events/search_venues.html", {})
 
 
+# Showing a single venue
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     return render(request, "events/show_venue.html", {"venue": venue})
 
 
+# List all the venues
 def list_venues(request):
     venue_list = Venue.objects.all()
     return render(request, "events/venues.html", {"venue_list": venue_list})
 
 
+# Add a venue
 def add_venue(request):
     submitted = False
     if request.method == "POST":
@@ -38,11 +84,13 @@ def add_venue(request):
     )
 
 
+# List all the events
 def all_events(request):
     event_list = Event.objects.all()
     return render(request, "events/event_list.html", {"event_list": event_list})
 
 
+# Home page
 def home(request, year=datetime.now().year, month=datetime.now().strftime("%B")):
     name = "David"
     # in case the month is added all in lower case. this makes it title case

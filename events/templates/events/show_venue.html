@@ -5,14 +5,14 @@
 <div class=container>
   <br>
   
-  <div class=card style="width: 28rem;">
-  <h1 class=card-header text-center>The Venue</h1>
+  <div class="card" style="width: 28rem;">
+    <h1 class="card-header text-center">{{ venue }}</h1>
 
-    <h4 class="card-title">Details about the {{ venue }} venue? </h4>
+    <h5 class="card-title text-center">Details about the {{ venue }} venue </h5>
     <!-- {{ venue }} -->
       <div class="card-body">
           <br>  
-            <p class="card-text">Address: {{ venue.address }}</p>
+          <p class="card-text"><strong>Address:</strong> {{ venue.address }}</p>
             <p class="card-text">PostCode: {{ venue.zip_code }}</p>
             <p class="card-text">Manager: {{ venue.phone }}</p>
             <p class="card-text">Venue Website: {{ venue.web }}</p>
