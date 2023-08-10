@@ -8,9 +8,19 @@ from .models import Event, Venue
 from .forms import VenueForm, EventForm
 
 
+# The update venues thing
+def update_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    form = EventForm(
+        request.POST or None, instance=event
+    )  # instance brngs in the details from the database entry
+    if form.is_valid():
+        form.save()
+        return redirect("list-events")
+    return render(request, "events/update_event.html", {"event": event, "form": form})
+
+
 # Add the Event page
-
-
 def add_event(request):
     submitted = False
     if request.method == "POST":

@@ -19,11 +19,9 @@
         <li>{{ user }}</li>
         {% endfor %}
       </ul>
-       
-  <div class="card-footer"><center><a href="{% url 'update-event' event.id %}" class="btn btn-outline-info btn-sm ">Update Event</a>
-      </center>
+  <div class="card-footer">
+<a href="#" class="btn btn-primary">Go somewhere</a>
   </div>
   </div><br/>
   {% endfor %}
-  <br/>
 {% endblock %}
