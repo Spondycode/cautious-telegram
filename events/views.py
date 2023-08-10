@@ -7,6 +7,9 @@ from .models import Event, Venue
 from .forms import VenueForm, EventForm
 from django.http import HttpResponse
 
+# import pagination dependencies
+from django.core.paginator import Paginator
+
 
 # Generate a text file
 def venue_text(request):
@@ -111,7 +114,17 @@ def show_venue(request, venue_id):
 # List all the venues
 def list_venues(request):
     venue_list = Venue.objects.all()
-    return render(request, "events/venues.html", {"venue_list": venue_list})
+
+    # Set up pagination
+    p = Paginator(Venue.objects.all(), 3)
+    page = request.GET.get("page")
+    venues = p.get_page(page)
+    nums = "a" * venues.paginator.num_pages
+    return render(
+        request,
+        "events/venues.html",
+        {"venue_list": venue_list, "venues": venues, "nums": nums},
+    )
 
 
 # Add a venue
