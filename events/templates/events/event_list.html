@@ -20,7 +20,10 @@
         {% endfor %}
       </ul>
        
-  <div class="card-footer"><center><a href="{% url 'update-event' event.id %}" class="btn btn-outline-info btn-sm ">Update Event</a>
+  <div class="card-footer"><center>
+      <a href="{% url 'update-event' event.id %}" class="btn btn-outline-info btn-sm ">Update Event</a>
+      <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm ">Delete Event</a>
+
       </center>
   </div>
   </div><br/>

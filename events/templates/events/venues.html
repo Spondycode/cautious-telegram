@@ -13,7 +13,8 @@
       <td> <a href="{% url 'show-venue' venue.id %}">{{ venue }}</a>
       </td>
       <!-- Added link under here -->
-      <td align="right"> <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-info btn-sm">Update</a>
+      <td align="right"> <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-info btn-sm">Update Venue</a>
+      <td align="right"> <a href="{% url 'delete-venue' venue.id %}" class="btn btn-outline-danger btn-sm">Delete Venue</a>
       </td>
       
     </tr>

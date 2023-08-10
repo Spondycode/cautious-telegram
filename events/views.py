@@ -1,4 +1,3 @@
-# from os import path
 from django.shortcuts import redirect, render
 import calendar
 from calendar import HTMLCalendar
@@ -6,6 +5,44 @@ from datetime import datetime
 from django.http import HttpResponseRedirect
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
+from django.http import HttpResponse
+
+
+# Generate a text file
+def venue_text(request):
+    response = HttpResponse(content_type="text/plain")
+    response["content-Disposition"] = "attachment; filename=venues.txt"
+    # Designate the models
+    venues = Venue.objects.all()
+
+    lines = []
+    # loop through them
+    for venue in venues:
+        lines.append(f"{venue}\n{venue.address}\n{venue.phone}\n\n")
+
+    # lines = [
+    #     "This line One\n",
+    #     "Line two coming up\n",
+    #     "And a third line\n",
+    # ]
+
+    # Write to text file
+    response.writelines(lines)
+    return response
+
+
+# Delete Venue
+def delete_venue(request, venue_id):
+    venue = Venue.objects.get(pk=venue_id)
+    venue.delete()
+    return redirect("list-venues")
+
+
+# Delete Event
+def delete_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    event.delete()
+    return redirect("list-events")
 
 
 # The update venues thing
@@ -96,7 +133,7 @@ def add_venue(request):
 
 # List all the events
 def all_events(request):
-    event_list = Event.objects.all()
+    event_list = Event.objects.all().order_by("name")
     return render(request, "events/event_list.html", {"event_list": event_list})
 
 
