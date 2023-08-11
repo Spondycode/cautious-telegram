@@ -23,12 +23,6 @@ def venue_text(request):
     for venue in venues:
         lines.append(f"{venue}\n{venue.address}\n{venue.phone}\n\n")
 
-    # lines = [
-    #     "This line One\n",
-    #     "Line two coming up\n",
-    #     "And a third line\n",
-    # ]
-
     # Write to text file
     response.writelines(lines)
     return response
