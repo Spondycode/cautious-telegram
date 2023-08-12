@@ -18,9 +18,16 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'list-events' %}">Events</a>
         </li>
+          {% if user.is_authenticated %}
+          Do something
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Log Out</a>
+        </li>
+          {% else %}
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'venue-text' %}">Venue Txt File</a>
         </li>
