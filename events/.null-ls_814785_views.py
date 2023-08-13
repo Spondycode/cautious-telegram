@@ -118,7 +118,7 @@ def search_venues(request):
             request,
             "events/search_venues.html",
             {"searched": searched, "venues": venues},
-        )  #  put inside the curlies to pass back to the page.
+        )  # inside the curlies to pass back to the page.
     else:
         return render(request, "events/search_venues.html", {})
 
@@ -126,7 +126,7 @@ def search_venues(request):
 # Showing a single venue
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
-    venue_owner = User.objects.get(pk=venue.owner)
+    venue_owner = User.objects.get(pk=venue_owner)
     return render(
         request, "events/show_venue.html", {"venue": venue, "venue_owner": venue_owner}
     )
@@ -137,7 +137,7 @@ def list_venues(request):
     venue_list = Venue.objects.all()
 
     # Set up pagination
-    p = Paginator(Venue.objects.all(), 3)
+    p = Paginator(Venue.objects.all(), 5)
     page = request.GET.get("page")
     venues = p.get_page(page)
     nums = "a" * venues.paginator.num_pages
@@ -209,31 +209,3 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime("%B"))
 
 def about(request):
     return render(request, "events/about.html", {})
-
-
-# Only showing my events
-def my_events(request):
-    if request.user.is_authenticated:
-        me = request.user.id
-        events = Event.objects.filter(attendees=me).order_by("name")
-        return render(request, "events/my_events.html", {"events": events})
-    else:
-        messages.success(request, ("You can't do that"))
-        return redirect("home")
-
-
-# Search events
-
-
-def search_events(request):
-    if request.method == "POST":
-        searched = request.POST["searched"]
-        events = Event.objects.filter(description__contains=searched)
-
-        return render(
-            request,
-            "events/search_events.html",
-            {"searched": searched, "events": events},
-        )
-    else:
-        return render(request, "events/search_events.html", {})

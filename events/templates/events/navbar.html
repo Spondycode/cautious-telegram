@@ -29,8 +29,10 @@
           <ul class="dropdown-menu">
           {% if user.is_authenticated %}
             <li><a class="dropdown-item" href="{% url 'add-event' %}">Add Event</a></li>
+            <li><a class="dropdown-item" href="{% url 'my-events' %}">My Events</a></li>
           {% else %}
         {% endif %}
+            <li><a class="dropdown-item" href="{% url 'search_events' %}">Search Events</a></li>
             <li><a class="dropdown-item" href="{% url 'list-events' %}">Events</a></li>
           </ul>
         </li>

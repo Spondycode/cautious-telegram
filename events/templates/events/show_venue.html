@@ -8,7 +8,6 @@
     <h1 class="card-header text-center">{{ venue }}</h1>
 
     <h5 class="card-title text-center">Details about the {{ venue }} venue </h5>
-    <p>{{ user.id }}</p>
     <!-- {{ venue }} -->
       <div class="card-body">
           <br>  
@@ -17,6 +16,9 @@
             <p class="card-text">Phone: {{ venue.phone }}</p>
             <p class="card-text">Venue Website: {{ venue.web }}</p>
             <p class="card-text">Venue Email: {{ venue.email_address }}</p>
+            <p class="card-text">Owner: {{ venue_owner }}</p>
+            <p class="card-text">Owner's Email: {{ venue_owner.email }}</p>
+
       </div>
       <br/>
 {% if user.is_authenticated %}
