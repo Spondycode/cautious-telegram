@@ -1,6 +1,7 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
 <center>    
   <br><br>
     <!-- {% if submitted %} -->
@@ -20,4 +21,9 @@
     <!-- {% endif %} -->
 </center>
 
+{% else %}
+<h2> You have to be logged in to Update Venues</h2>
+
+<a class="btn btn-info" href="{% url 'login' %}">Log in Here</a>
+{% endif %}
 {% endblock %}

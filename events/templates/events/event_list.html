@@ -21,9 +21,15 @@
       </ul>
        
   <div class="card-footer"><center>
+{% if user.is_authenticated %}
+  {% if user == event.manager %}
       <a href="{% url 'update-event' event.id %}" class="btn btn-outline-info btn-sm ">Update Event</a>
       <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm ">Delete Event</a>
-
+      {% else %}
+  {% endif %}
+{% else %}
+<a class="btn btn-outline-info" href="{% url 'login' %}">Log in Here for more options</a>
+{% endif %}
       </center>
   </div>
   </div><br/>

@@ -49,7 +49,48 @@ class VenueForm(ModelForm):
         }
 
 
+# ADMIN Superuser Event form
 class EventForm(ModelForm):
+    class Meta:
+        model = Event
+        fields = (
+            "name",
+            "event_date",
+            "venue",
+            "attendees",
+            "description",
+        )
+        labels = {
+            "name": "",
+            "event_date": "",
+            "venue": "Venue",
+            "attendees": "Attendees",
+            "description": "",
+        }
+        widgets = {
+            "name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Name of the Event"}
+            ),
+            "event_date": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Date of Event"}
+            ),
+            "venue": forms.Select(
+                attrs={"class": "form-select", "placeholder": "Venue"}
+            ),
+            "attendees": forms.SelectMultiple(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Attendees",
+                }
+            ),
+            "description": forms.Textarea(
+                attrs={"class": "form-control", "placeholder": "Description"}
+            ),
+        }
+
+
+# Event Form TWO
+class EventFormAdmin(ModelForm):
     class Meta:
         model = Event
         fields = (

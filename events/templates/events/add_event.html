@@ -1,6 +1,7 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
   <br><br>
     {% if submitted %}
      <h3> Your event was submitted successfully !!!</h3>
@@ -17,5 +18,12 @@
       </form>
 
     {% endif %}
+    <br/><br/>
+{% else %}
+<h1> You have to be logged in to Add an Event</h1>
+
+<a href="{% url 'login' %}">Log in Here</a>
+
+{% endif %}
 
 {% endblock %}
