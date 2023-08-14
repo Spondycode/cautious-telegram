@@ -2,22 +2,55 @@
 
 {% block content %}
     
-<div class=container>
+<div class="container">
   
-  <h2>Hello  {{ user }}  - Your events in {{ month }} - {{ year }}</h2>
     <center>
+      <p>
+        {{ month }}
+        {{ year }}<br/>
+      </p>
 
-    <p>
-    {{ month}}
-    {{ year }}<br/>
-    </p>
+      {{ cal|safe }}
+      <br><br><br>
 
+  <h2>Hello {{ user }} - Your events in {{ month }} - {{ year }}</h2>
+    </center>
 
+    {% if event_list %}
+      {% for event in event_list %}
+        <div class="card">
+          <h3 class="card-header">{{ event.name }}</h3>
+          <ul>
+            <li><strong>Date:</strong> {{ event.event_date }}</li>
+            <li>Venue: {{ event.venue }}</li>
+            <li>Venue Web Page: {{ event.venue.web }}</li>
+            <li>Manager: {{ event.manager }}</li>
+            <li>Description: {{ event.description }}</li>
+            <br/>
+            <h5>Attendees:</h5> 
+            {% for user in event.attendees.all %}
+              <li>{{ user }}</li>
+            {% endfor %}
+          </ul>
+          <div class="card-footer"><center>
+            {% if user.is_authenticated %}
+              {% if user == event.manager %}
+                <a href="{% url 'update-event' event.id %}" class="btn btn-outline-info btn-sm">Update Event</a>
+                <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm">Delete Event</a>
+              {% endif %}
+            {% else %}
+              <a class="btn btn-outline-info" href="{% url 'login' %}">Log in Here for more options</a>
+            {% endif %}
+          </center></div>
+        </div><br/>
+      {% endfor %}
+    {% else %}
+      <p>Sorry, nothing happening this month...</p>
+    {% endif %}
 
-    {{ cal|safe }}
     <br><br><br>
+    <center>
       Copyright {{ current_year }}
-
     </center>
 </div>
 

@@ -1,37 +1,37 @@
 {% extends 'events/base.html' %}
 
 {% block content %}
-    
-<div class=container>
+<div class="container">
   <br>
   <div class="card" style="width: 28rem;">
     <h1 class="card-header text-center">{{ venue }}</h1>
+    <h5 class="card-title text-center">Details about the {{ venue }} venue</h5>
+    <div class="card-body">
+      <br>
+      <p class="card-text"><strong>Address:</strong> {{ venue.address }}</p>
+      <p class="card-text">PostCode: {{ venue.zip_code }}</p>
+      <p class="card-text">Phone: {{ venue.phone }}</p>
+      <p class="card-text">Venue Website: {{ venue.web }}</p>
+      <p class="card-text">Venue Email: {{ venue.email_address }}</p>
+      <p class="card-text">Owner: {{ venue_owner }}</p>
+      <p class="card-text">Owner's Email: {{ venue_owner.email }}</p>
+    </div>
+    <br/>
 
-    <h5 class="card-title text-center">Details about the {{ venue }} venue </h5>
-    <!-- {{ venue }} -->
-      <div class="card-body">
-          <br>  
-          <p class="card-text"><strong>Address:</strong> {{ venue.address }}</p>
-            <p class="card-text">PostCode: {{ venue.zip_code }}</p>
-            <p class="card-text">Phone: {{ venue.phone }}</p>
-            <p class="card-text">Venue Website: {{ venue.web }}</p>
-            <p class="card-text">Venue Email: {{ venue.email_address }}</p>
-            <p class="card-text">Owner: {{ venue_owner }}</p>
-            <p class="card-text">Owner's Email: {{ venue_owner.email }}</p>
+    {% if venue.venue_image %}
+      <img src="{{ venue.venue_image.url }}" alt="StreamDeck Automation">
+    {% endif %}
 
-      </div>
-      <br/>
-{% if user.is_authenticated %}
-        <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-info btn-sm">Update Venue</a>
-        <a href="{% url 'delete-venue' venue.id %}" class="btn btn-outline-danger btn-sm">Delete Venue</a>
-
-{% else %}
-
-<a class="btn btn-info btn-sm" href="{% url 'login' %}">Log in To Update</a>
-
-{% endif %}
-  </div>
+    <div class="card-footer"><center>
+      {% if user.is_authenticated %}
+        {% if user == venue_owner %}
+          <a href="{% url 'update-venue' venue.id %}" class="btn btn-outline-info btn-sm">Update Venue</a>
+          <a href="{% url 'delete-venue' venue.id %}" class="btn btn-outline-danger btn-sm">Delete Venue</a>
+        {% endif %}
+      {% else %}
+        <a class="btn btn-outline-info" href="{% url 'login' %}">Log in Here for more options</a>
+      {% endif %}
+    </center></div>
+  </div><br/>
 </div>
-
 {% endblock %}
-

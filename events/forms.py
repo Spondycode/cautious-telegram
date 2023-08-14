@@ -15,6 +15,7 @@ class VenueForm(ModelForm):
             "phone",
             "web",
             "email_address",
+            "venue_image",
         )
         labels = {
             "name": "",
@@ -23,6 +24,7 @@ class VenueForm(ModelForm):
             "phone": "",
             "web": "",
             "email_address": "",
+            "venue_image": "",
         }
         widgets = {
             "name": forms.TextInput(

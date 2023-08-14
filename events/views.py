@@ -152,7 +152,7 @@ def list_venues(request):
 def add_venue(request):
     submitted = False
     if request.method == "POST":
-        form = VenueForm(request.POST)
+        form = VenueForm(request.POST, request.FILES)
         if form.is_valid():
             # form.save()
             venue = form.save(commit=False)
@@ -176,7 +176,6 @@ def all_events(request):
 
 # Home page
 def home(request, year=datetime.now().year, month=datetime.now().strftime("%B")):
-    name = "David"
     # in case the month is added all in lower case. this makes it title case
     month = month.capitalize()
     # Convert month from string to number
@@ -189,6 +188,11 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime("%B"))
     now = datetime.now()
     current_year = now.year
 
+    # Query the Events Model for the Date
+    event_list = Event.objects.filter(
+        event_date__year=year, event_date__month=month_number
+    ).order_by("name")
+
     # Get current time
     time = now.strftime("%H:%M:%S")
 
@@ -196,13 +200,13 @@ def home(request, year=datetime.now().year, month=datetime.now().strftime("%B"))
         request,
         "events/home.html",
         {
-            "first_name": name,
             "year": year,
             "month": month,
             "month_number": month_number,
             "cal": cal,
             "current_year": current_year,
             "time": time,
+            "event_list": event_list,
         },
     )
 
