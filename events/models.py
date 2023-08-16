@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User  # , auth
+from datetime import date
 
 
 class Venue(models.Model):
@@ -33,6 +34,23 @@ class Event(models.Model):
     manager = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     description = models.TextField(blank=True)
     attendees = models.ManyToManyField(MyClubUser, blank=True)
+    approved = models.BooleanField("Approved", default=False)
 
     def __str__(self):
         return self.name
+
+    @property
+    def Days_till(self):
+        today = date.today()
+        days_till = self.event_date.date() - today
+        days_stripped = str(days_till).split(",", 1)[0]
+        return days_stripped
+
+    @property
+    def Is_Past(self):
+        today = date.today()
+        if self.event_date.date() < today:
+            thing = "Event has already happened"
+        else:
+            thing = "Event Coming Soon !"
+        return thing

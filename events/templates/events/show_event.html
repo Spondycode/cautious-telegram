@@ -1,0 +1,42 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>An Event</h1>
+
+  {% if event.approved %}
+    <div class="card">
+      <h3 class="card-header">{{ event.name }}</h3>
+      <ul>
+        <li><strong>Date:</strong> {{ event.event_date }}</li>
+        <li><strong>Missed or Coming Soon:</strong> {{ event.Is_Past }}</li>
+        <li><strong>Days Until Event:</strong> {{ event.Days_till }}</li>
+        <li><strong>Venue:</strong> {{ event.venue }}</li>
+        <li><strong>Venue Web Page:</strong> {{ event.venue.web }}</li>
+        <li><strong>Manager:</strong> {{ event.manager }}</li>
+        <li><strong>Description:</strong> {{ event.description }}</li>
+        <li><strong>Approved:</strong> {{ event.approved }}</li>
+      </ul>
+      <h5>Attendees:</h5>
+      <ul>
+        {% for user in event.attendees.all %}
+          <li>{{ user }}</li>
+        {% endfor %}
+      </ul>
+
+      <div class="card-footer"><center>
+        {% if user.is_authenticated %}
+          {% if user == event.manager %}
+            <a href="{% url 'update-event' event.id %}" class="btn btn-outline-info btn-sm">Update Event</a>
+            <a href="{% url 'delete-event' event.id %}" class="btn btn-outline-danger btn-sm">Delete Event</a>
+          {% endif %}
+        {% else %}
+          <a class="btn btn-outline-info" href="{% url 'login' %}">Log in Here for more options</a>
+        {% endif %}
+      </center></div>
+    </div>
+    <br/>
+    <br/>
+  {% endif %}
+</div>
+{% endblock %}

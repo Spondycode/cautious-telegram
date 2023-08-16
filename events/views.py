@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 import calendar
-from calendar import HTMLCalendar
+from calendar import HTMLCalendar, week
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from .models import Event, Venue
@@ -99,7 +99,7 @@ def add_event(request):
 def update_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     form = VenueForm(
-        request.POST or None, instance=venue
+        request.POST or None, request.FILES or None, instance=venue
     )  # instance brngs in the details from the database entry
     if form.is_valid():
         form.save()
@@ -170,8 +170,50 @@ def add_venue(request):
 
 # List all the events
 def all_events(request):
-    event_list = Event.objects.all().order_by("name")
+    event_list = Event.objects.all().order_by("-event_date")
     return render(request, "events/event_list.html", {"event_list": event_list})
+
+
+def admin_approval(request):
+    # Get The Venues
+    venue_list = Venue.objects.all()
+    # Get Counts
+    event_count = Event.objects.all().count()
+    venue_count = Venue.objects.all().count()
+    user_count = User.objects.all().count()
+
+    event_list = Event.objects.all().order_by("-event_date")
+    if request.user.is_superuser:
+        if request.method == "POST":
+            # Get list of checked box id's
+            id_list = request.POST.getlist("boxes")
+
+            # Uncheck all events
+            event_list.update(approved=False)
+
+            # Update the database
+            for x in id_list:
+                Event.objects.filter(pk=int(x)).update(approved=True)
+
+            # Show Success Message and Redirect
+            messages.success(request, ("Event List Approval Has Been Updated!"))
+            return redirect("list-events")
+
+        else:
+            return render(
+                request,
+                "events/admin_approval.html",
+                {
+                    "event_list": event_list,
+                    "event_count": event_count,
+                    "venue_count": venue_count,
+                    "user_count": user_count,
+                    "venue_list": venue_list,
+                },
+            )
+    else:
+        messages.success(request, ("You aren't authorized to view this page!"))
+        return redirect("home")
 
 
 # Home page
@@ -240,4 +282,23 @@ def search_events(request):
             {"searched": searched, "events": events},
         )
     else:
-        return render(request, "events/search_events.html", {})
+        return render(request, "events/search_events.html", {"events": events})
+
+
+# Show events in a venue
+def venue_events(request, venue_id):
+    # Grab the venue
+    venue = Venue.objects.get(id=venue_id)
+    # Grab trhe events from that venue
+    events = venue.event_set.all()
+    if events:
+        return render(request, "events/venue_events.html", {"events": events})
+    else:
+        messages.success(request, ("That venue has no events for now!"))
+        return redirect("admin-approval")
+
+
+# Show Event
+def show_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    return render(request, "events/show_event.html", {"event": event})

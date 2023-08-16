@@ -1,0 +1,95 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+    
+<div class=container>
+<br>
+
+  <h1>Admin Dashboard</h1>
+
+<div class="card">
+  <div class="card-header">
+    My Club Website Stats
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">How Many Events, Users and Venues</h5>
+    <p class="card-text"><strong>Users:</strong> {{ user_count }}</p>
+    <p class="card-text"><strong>Events:</strong> {{ event_count }}</p>
+    <p class="card-text"><strong>Venues: </strong>{{ venue_count }}</p>
+    <a href="{% url 'home' %}" class="btn btn-info">Home</a>
+  </div>
+</div>
+
+<br><br>
+
+
+
+<table class="table table-striped table-hover table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Venue List</th>
+      <th scope="col">Events</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for venue in venue_list %}
+  	<tr>
+  		<td>
+        <a href="{% url 'show-venue' venue.id %}">{{ venue }}</a>
+
+      </td>
+  		<td> 
+        <a class="btn btn-outline-primary" href="{% url 'venue-events' venue.id %}">List Events</a>
+ <!-- button leading to page to show a list of events for the venue -->
+        <!-- <button class="btn btn-outline-info" type="">List Events</button> -->
+          		</td>
+  	</tr>
+{% endfor %}
+
+
+ </tbody>
+</table>
+
+
+
+
+<br/><br/>
+<h1>Event Approval Form</h1>
+
+<form action="" method=POST>
+	{% csrf_token %}
+<table class="table table-striped table-hover table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Event Name</th>
+      <th scope="col">Aproved</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for event in event_list %}
+  	<tr>
+  		<td>{{event }}</td>
+  		<td>
+  			{% if event.approved %}
+  			<div class="form-check">
+  				<input class="form-check-input" type="checkbox" checked="checked" value={{event.id}} name="boxes">
+  			</div>
+  			{% else %}
+  			<div class="form-check">
+  				<input class="form-check-input" type="checkbox" value={{event.id}} name="boxes">
+  			</div>
+  			{% endif %}
+
+  		</td>
+  	</tr>
+{% endfor %}
+
+
+ </tbody>
+</table>
+
+<br/>
+<button class='btn btn-info' type="submit">Update Approval</button>
+
+{% endblock %}
+

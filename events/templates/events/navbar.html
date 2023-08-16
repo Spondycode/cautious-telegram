@@ -39,6 +39,9 @@
 
         </li>
           {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+            <li><a class="nav-link active" href="{% url 'admin-approval' %}">Admin</a></li>
+            {% endif %}
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Log Out</a>
         </li>
